@@ -1,36 +1,28 @@
-#include<bits/stdc++.h>
-
+#include <bits/stdc++.h>
+typedef unsigned long long ull;
 using namespace std;
-
-unsigned long long binary_to_decimal(string binary)
-{
- long long decimal = 0;
-    for (int i = 0; i < binary.size(); i++)
-    {
-        decimal = decimal * 2 + (binary[i] - '0');
+ull change (string s, int n){
+    ull sum = 0;
+    for (int i = 0; i < n; i++){
+        if (s[i] == '1')
+            sum |= 1 << (n - 1 - i);
     }
-    return decimal;
+    return sum;
 }
-
-int main()
-{
+ull print (string a, string b , int n){
+    ull aa = change (a, n);
+    ull bb = change (b, n);
+    if (aa == bb)
+        return 0;
+    return (aa > bb) ? (aa - bb - 1) : (bb - aa -1);
+}
+int main (){
     int t;
     cin >> t;
-    while (t--)
-    {
+    while (t--){
         int n;
-        string a, b;
-        cin >> n >> a >> b;
-
-     long long decimal_a = binary_to_decimal(a);
-     long long decimal_b = binary_to_decimal(b);
-     long long result;
-        if (decimal_a == decimal_b)
-            result = 0;
-        else
-            result = abs(decimal_b - decimal_a) - 1;
-
-        cout << result << "\n";
+        string x, y;
+        cin >> n >> x >> y;
+        cout << print (x , y, n) << endl;
     }
-    return 0;
-}
+    return 0;}
