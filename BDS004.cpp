@@ -1,54 +1,50 @@
-#include <bits/stdc++.h>
-#define mod 1000000007
+#include <iostream>
 using namespace std;
 
-int t;
-int n, k;
-long f[26];
-int check(int n, int k, int start, int end)
+// to store fibonacci numbers
+// 42 second number in fibonacci series
+// largest possible integer
+int fib[43] = { 0 };
+
+// Function to generate fibonacci series
+void fibonacci()
 {
-    if (k == 0)
-    {
-        if (n == 0)
-            return 1;
-        return 0;
-    }
-    int ways = 0;
-    for (int i = start; i <= end; i++)
-    {
-        if (f[i] <= n)
-        {
-            ways += check(n - f[i], k - 1, i, end)%mod;
-        }
-    }
-    return ways;
+	fib[0] = 1;
+	fib[1] = 2;
+	for (int i = 2; i < 43; i++)
+		fib[i] = fib[i - 1] + fib[i - 2];
 }
 
+// Recursive function to return the
+// number of ways
+int rec(int x, int y, int last)
+{
+	// base condition
+	if (y == 0) {
+		if (x == 0)
+			return 1;
+		return 0;
+	}
+	int sum = 0;
+	// for recursive function call
+	for (int i = last; i >= 0 and fib[i] * y >= x; i--) {
+		if (fib[i] > x)
+			continue;
+		sum += rec(x - fib[i], y - 1, i);
+	}
+	return sum;
+}
+
+// Driver code
 int main()
 {
-    ios_base::sync_with_stdio(false);
-    cin.tie(0);
-    cout.tie(0);
-    cin >> t;
-    f[0] = 0;
-    f[1] = 1;
-    while (t--)
-    {
-        cin >> n >> k;
-        int end = 1;
-
-        for (int i = 2; i <= 26; i++)
-        {
-            f[i] = f[i - 1] + f[i - 2];
-            if (f[i] > n)
-            {
-                break;
-            }
-            end = i;
-        }
-        // for (int i = 0; i <= end; i++)
-        //     cout << f[i] << " ";
-        cout << check(n, k, 2, end) << "\n";
-    }
-    return 0;
+	fibonacci();
+	int t;
+	cin >> t;
+	while (t--) {
+		int n, k;
+		cin >> n >> k;
+		cout << rec(n, k, 42) << endl;
+	}
+	return 0;
 }

@@ -23,7 +23,7 @@ int main () {
 			}		
 		}
 		if (n>1) {
-			for (long long i=3; i<sqrt(n)+1; i=i+2) {
+			for (long long i=3; i<sqrt(n)+1; i+=2) {
 				if (n%i==0) {
 					dem=dem+1;
 					giatri[k]=i;
@@ -42,8 +42,11 @@ int main () {
 		}
 		cout <<dem<<endl;
 		if (demso[1]) cout <<"2 "<<demso[1]<<endl;
-		for (int j=2; j<k; j++) if (giatri[j]) cout <<giatri[j]<<" "<<demso[j]<<endl;
-		if (final) cout<<n<<" 1"<<endl;
+		for (int j=2; j<k; j++) 
+		if (giatri[j]) 
+		cout <<giatri[j]<<" "<<demso[j]<<endl;
+		if (final) 
+		cout<<n<<" 1"<<endl;
 	}
 return 0;
 }
