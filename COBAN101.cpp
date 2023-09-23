@@ -13,7 +13,7 @@ int main()
     while (t--)
     {
         int arr[10] = {0};
-        int a, b;
+       long long  a, b;
         cin >> a >> b;
         if (a > b)// a= 1 va b = 0
         {
@@ -28,7 +28,7 @@ int main()
         for (int i = a; i <= b; i++)
         {
 
-            int t1 = i;
+            long long  t1 = i;
             while (t1 > 0)
             {
                 int temp = t1 % 10;
