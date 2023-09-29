@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
-
-int main() {
+int main()
+{
     ios_base::sync_with_stdio(false);
     cin.tie(0);
     cout.tie(0);
@@ -9,24 +9,31 @@ int main() {
     int t;
     cin >> t;
     string s;
-    while (t--) {
+    while (t--)
+    {
         cin >> s;
         stack<char> a;
         int dem = 0;
-        for (int i = 0; i < s.length(); i++) {
-            char x = s[i]; // Sửa x thành kiểu char
-            if (a.empty() && x == ')') {
-                x = '('; // Sửa dấu == thành =
+        for (int i = 0; i < s.length(); i++)
+        {
+            int x = s[i];
+            if (a.empty() && x == ')')
+            {
+                x == '(';
                 a.push(x);
                 dem++;
-            } else if (x == '(')
+            }
+            else if (x == '(')
                 a.push(x);
-            else if (x == ')') {
+            else if (x == ')')
+            {
                 if (!a.empty())
                     a.pop();
             }
-            if (x == '(' && i == s.length() - 1) {
-                while (!a.empty()) {
+            if (x == '(' && i == s.length() - 1)
+            {
+                while (!a.empty())
+                {
                     a.pop();
                     dem++;
                     if (a.empty())
@@ -35,7 +42,8 @@ int main() {
                 }
             }
         }
-        while (!a.empty()) {
+        while (!a.empty())
+        {
             a.pop();
             dem++;
             if (a.empty())
@@ -44,5 +52,4 @@ int main() {
         }
         cout << dem << endl;
     }
-    return 0;
 }
