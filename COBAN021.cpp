@@ -1,54 +1,55 @@
-#include <iostream>
-#include <string>
+/TÍCH CHỮ SỐ LỚN NHẤT
+#include<bits/stdc++.h>
+//#include<iostream>
+using namespace std ;
+#define int long long
+const int maxn = 1e7 + 7;
+const int mod = 1e9 + 7;
 
-using namespace std;
-
-typedef long long ll;
-
-bool is_valid(ll num, ll a, ll b) {
-    string s = to_string(num);
-    int count_a = 0, count_b = 0;
-
-    for (char ch : s) {
-        if (ch - '0' == a) {
-            count_a++;
-        } else if (ch - '0' == b) {
-            count_b++;
-        } else {
-            return false; // Contains a digit other than A and B
-        }
-    }
-
-    return count_a == count_b;
+int n, cs, a , m , key[100005], mx, t,gt, ans , test[100005];
+int tinh(int x){
+    int ans = 1 ;
+    while(x) ans *= (x % 10), x /= 10 ;
+    return ans;
 }
+void implement(){
 
-ll find_min_number(ll n, ll a, ll b) {
-    for (ll num = n; num <= 1e16; num++) {
-        if (is_valid(num, a, b)) {
-            return num;
-        }
+    cin >> n;
+    if(n < 1000){
+        cout << tinh(key[n]);
+        return ;
     }
-    return -1; // No such number found
+    m = n , cs = 0, ans = 1;
+    while(m){
+        cs ++;
+        m/= 10;
+    }
+    a = n;
+    for(int i = 1 ; i <= cs-3; ++i){
+        a/=10;
+    }
+    m = a;
+    for(int i = 1; i <= cs - 3; ++i){
+        m = m*10 + 9;
+    }
+    if(m == n) m = key[a];
+    else m = key[a-1];
+    for(int i = 1 ; i <= cs-3; ++i){
+        m = m*10 + 9;
+    }
+    cout << tinh(m);
 }
-
-int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-
-    int t;
-    cin >> t;
-
-    while (t--) {
-        ll n, a, b;
-        cin >> n >> a >> b;
-
-        ll result = find_min_number(n, a, b);
-        if (result != -1) {
-            cout << result << endl;
-        } else {
-            cout << "No such number found." << endl;
-        }
+int32_t main(){
+    ios_base::sync_with_stdio(0);
+    cin.tie(0); cout.tie(0);
+    for(int i = 1 ; i <= 1e3; i++){
+        if(tinh(i) > mx) mx = tinh(i), gt = i ;
+        key[i] = gt;
     }
-
+    int t; cin >> t;
+    while(t--){
+        implement();
+        cout << endl;
+    }
     return 0;
 }

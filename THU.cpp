@@ -1,54 +1,65 @@
 #include <iostream>
-#include <vector>
+#include <cmath>
 
 using namespace std;
 
-// Hàm tính khoảng cách hoán vị giữa hai hoán vị A và B
-int permutationDistance(int N, vector<int>& A, vector<int>& B) {
-    vector<int> posA(N + 1);
-
-    // Gán vị trí của từng phần tử trong hoán vị A vào mảng posA
-    for (int i = 0; i < N; ++i) {
-        posA[A[i]] = i;
+bool isPrime(int n) {
+    if (n <= 1) return false;
+    if (n <= 3) return true;
+    if (n % 2 == 0 || n % 3 == 0) return false;
+    for (int i = 5; i * i <= n; i += 6) {
+        if (n % i == 0 || n % (i + 2) == 0) return false;
     }
+    return true;
+}
 
-    int distance = 0;
-
-    // Xác định số lần cần hoán đổi để chuyển từ A thành B
-    for (int i = 0; i < N; ++i) {
-        int target = posA[B[i]];  // Vị trí mục tiêu của phần tử B[i] trong A
-
-        // Hoán đổi A[i] với phần tử A[target] để đưa A[target] về đúng vị trí
-        while (target != i) {
-            swap(A[i], A[target]);
-            target = posA[B[i]];  // Cập nhật lại vị trí mục tiêu
-            distance++;
-        }
+int digitSum(int n) {
+    int sum = 0;
+    while (n > 0) {
+        sum += n % 10;
+        n /= 10;
     }
+    return sum;
+}
 
-    return distance;
+int digitSquareSum(int n) {
+    int sum = 0;
+    while (n > 0) {
+        int digit = n % 10;
+        sum += digit * digit;
+        n /= 10;
+    }
+    return sum;
 }
 
 int main() {
-    int t;
-    cin >> t;
+    int N, K, X, S;
+    
+    // Nhập giá trị N, K, X, S từ bàn phím
+    cout << "Nhập N: ";
+    cin >> N;
+    cout << "Nhập K: ";
+    cin >> K;
+    cout << "Nhập X: ";
+    cin >> X;
+    cout << "Nhập S: ";
+    cin >> S;
 
-    while (t--) {
-        int N;
-        cin >> N;
+    // Bắt đầu tìm số thỏa mãn các điều kiện
+    int lowerBound = pow(10, N - 1);
+    int upperBound = pow(10, N) - 1;
+    bool found = false;
 
-        vector<int> A(N), B(N);
-
-        for (int i = 0; i < N; ++i) {
-            cin >> A[i];
+    for (int i = lowerBound; i <= upperBound; i++) {
+        if (isPrime(i) && digitSum(i) == K && i % 10 == X && digitSquareSum(i) == S) {
+            cout << "Số nguyên dương thỏa mãn các điều kiện là: " << i << endl;
+            found = true;
+            break;
         }
+    }
 
-        for (int i = 0; i < N; ++i) {
-            cin >> B[i];
-        }
-
-        int distance = permutationDistance(N, A, B);
-        cout << distance << endl;
+    if (!found) {
+        cout << "Không tìm thấy số thỏa mãn các điều kiện." << endl;
     }
 
     return 0;

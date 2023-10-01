@@ -1,48 +1,39 @@
 #include <bits/stdc++.h>
 using namespace std;
-
-int main() {
+int t;
+string s;
+void check_grammar(string grammar)
+{
+    int dem = 0;
+    stack<char> mystack;
+    for (char key : grammar)
+    {
+        if (key == '(')
+            mystack.push(key);
+        else
+        {
+            if (mystack.empty())
+            {
+                mystack.push('(');
+                dem++;
+            }
+            else
+                mystack.pop();
+        }
+    }
+    cout << dem + mystack.size() / 2 << "\n";
+}
+int main()
+{
     ios_base::sync_with_stdio(false);
     cin.tie(0);
     cout.tie(0);
-
-    int t;
     cin >> t;
-    string s;
-    while (t--) {
+    cin.ignore();
+    while (t--)
+    {
         cin >> s;
-        stack<char> a;
-        int dem = 0;
-        for (int i = 0; i < s.length(); i++) {
-            char x = s[i]; // Sửa x thành kiểu char
-            if (a.empty() && x == ')') {
-                x = '('; // Sửa dấu == thành =
-                a.push(x);
-                dem++;
-            } else if (x == '(')
-                a.push(x);
-            else if (x == ')') {
-                if (!a.empty())
-                    a.pop();
-            }
-            if (x == '(' && i == s.length() - 1) {
-                while (!a.empty()) {
-                    a.pop();
-                    dem++;
-                    if (a.empty())
-                        break;
-                    a.pop();
-                }
-            }
-        }
-        while (!a.empty()) {
-            a.pop();
-            dem++;
-            if (a.empty())
-                break;
-            a.pop();
-        }
-        cout << dem << endl;
+        check_grammar(s);
     }
     return 0;
 }
