@@ -1,4 +1,4 @@
-/TÍCH CHỮ SỐ LỚN NHẤT
+
 #include<bits/stdc++.h>
 //#include<iostream>
 using namespace std ;

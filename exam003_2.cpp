@@ -1,38 +1,26 @@
-#include <cstdio>
 #include <bits/stdc++.h>
-#include <string>
-
 using namespace std;
+string intToExcelColumn(long long i)
+{
+    string column = "";
+    while (i > 0)
+    {
+        long long  remainder = (i - 1) % 26;
+        column = char('A' + remainder) + column;
+        i = (i - 1) / 26;
+    }
+    return column;
+}
 
-string s;
 int main()
 {
-  freopen("input.txt", "r", stdin);
+    freopen("input.txt", "r", stdin);
     freopen("output.txt", "w", stdout);
-   	long long n;
-    while (cin>>n)
-    if (n>0)
+    long long  t;
+    while (cin >> t)
     {
-        s="";
-        long long d=0;
-        string s1="";
-        while (n!=0)
-        {   
-            int du=n%26;
-            n/=26;
-            du=du-d;
-            if (n==0 && du<=0) break;
-            if (du<=0) 
-            {
-                du+=26; 
-                d=1;
-            }
-        s1=char(du+64);
-        s=s1+s;
-        }
-
-        cout<<s;
-        cout<<endl;
+        cout << intToExcelColumn(t) << "\n";
     }
-    
+
+    return 0;
 }

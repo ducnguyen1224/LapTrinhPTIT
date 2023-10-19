@@ -1,61 +1,125 @@
-#include <iostream>
-#include <string>
+
+#include <bits/stdc++.h>
 using namespace std;
 
-string subtractWithCarry(string str1, string str2) {
-    int n = str1.length();
-    int m = str2.length();
+string sumBig(string a, string b)
+{
+	if (a.length() > b.length())
+		swap(a, b);
 
-    // Đảm bảo str1 luôn có độ dài lớn hơn hoặc bằng str2
-    if (n < m) {
-        swap(str1, str2);
-        swap(n, m);
-    }
+	string str = "";
 
-    string result = "";
-    int carry = 0;
+	int n1 = a.length(), n2 = b.length();
 
-    for (int i = 0; i < n; ++i) {
-        int digit1 = str1[n - 1 - i] - '0';
-        int digit2 = (i < m) ? str2[m - 1 - i] - '0' : 0;
+	int diff = n2 - n1;
 
-        // Tính phần bù 9 của digit1 và digit2
-        int complement1 = 9 - digit1;
-        int complement2 = 9 - digit2;
+	int carry = 0;
 
-        // Tính tổng của phần bù 10 (phần bù 9 + 1) của digit1 và digit2, cộng thêm biến carry
-        int sum = complement1 + complement2 + carry;
+	for (int i = n1 - 1; i >= 0; i--) {
 
-        // Nếu sum >= 10, cập nhật biến carry
-        if (sum >= 10) {
-            carry = 1;
-            sum -= 10;
-        } else {
-            carry = 0;
-        }
+		int sum
+			= ((a[i] - '0')
+			+ (b[i + diff] - '0') + carry);
 
-        result = to_string(sum) + result;
-    }
+		str.push_back(sum % 10 + '0');
 
-    // Xóa các số 0 dư ở đầu kết quả
-    size_t pos = result.find_first_not_of('0');
-    if (pos != string::npos) {
-        result = result.substr(pos);
-    }
+		carry = sum / 10;
+	}
 
-    return (result.empty()) ? "0" : result;
+
+	for (int i = n2 - n1 - 1; i >= 0; i--) {
+
+		int sum = ((b[i] - '0') + carry);
+
+		str.push_back(sum % 10 + '0');
+		carry = sum / 10;
+	}
+
+	if (carry)
+		str.push_back(carry + '0');
+
+	reverse(str.begin(), str.end());
+
+	return str;
 }
 
-int main() {
-    int T;
-    cin >> T;
+string complement10(string v)
+{
+	// Stores the complement
+	string complement = "";
 
-    for (int i = 0; i < T; ++i) {
-        string str1, str2;
-        cin >> str1 >> str2;
-        string result = subtractWithCarry(str1, str2);
-        cout << result << endl;
-    }
+	// Calculate 9's complement
+	for (int i = 0; i < v.size(); i++) {
 
-    return 0;
+		// Subtract every bit from 9
+		complement += '9' - v[i] + '0';
+	}
+
+	// Add 1 to 9's complement
+	// to find 10's complement
+	complement = sumBig(complement, "1");
+	return complement;
+}
+
+// Function returns subtraction
+// of two given numbers as strings
+string subtract(string a, string b)
+{
+
+	// If second string is larger
+	if (a.length() < b.length())
+		swap(a, b);
+
+	// Calculate respective lengths
+	int l1 = a.length(), l2 = b.length();
+
+	// If lengths aren't equal
+	int diffLen = l1 - l2;
+
+	for (int i = 0; i < diffLen; i++) {
+
+		// Insert 0's to the beginning
+		// of b to make both the lengths equal
+		b = "0" + b;
+	}
+
+	// Add (complement of B) and A
+	string c = sumBig(a, complement10(b));
+
+	// If length of new string is greater
+	// than length of first string,
+	// than carry is generated
+	if (c.length() > a.length()) {
+		string::iterator it;
+
+		// Erase first bit
+		it = c.begin();
+
+		c.erase(it);
+
+		// Trim zeros at the beginning
+		it = c.begin();
+
+		while (*it == '0')
+			c.erase(it);
+
+		return c;
+	}
+
+	// If both lengths are equal
+	else {
+		return complement10(c);
+	}
+}
+
+// Driver Code
+int main()
+{
+	int tc;cin>>tc;
+	while(tc--){
+		string s,t;cin>>s>>t;
+	cout << subtract(s, t) << endl;
+	}
+
+	return 0;
 }

@@ -1,56 +1,91 @@
-#include <iostream>
-#include <vector>
+#include <bits/stdc++.h>
 using namespace std;
 
-int findLongestSubarray(vector<int>& arr) {
-    int n = arr.size();
-    vector<int> dp(n, 1);
+// Returns length of maximum length subsequence
+int findSubsequence(int arr[], int n)
+{
 
-    int maxLength = 1;
+	// To store length of maximum length subsequence
+	int len = 1;
 
-    for (int i = 1; i < n; ++i) {
-        for (int j = 0; j < i; ++j) {
-            // Kiểm tra xem phần tử arr[i] và arr[j] có chung ít nhất một chữ số hay không
-            bool hasCommonDigit = false;
-            int x = arr[i];
-            int y = arr[j];
-            while (x > 0 && !hasCommonDigit) {
-                int digitX = x % 10;
-                while (y > 0) {
-                    int digitY = y % 10;
-                    if (digitX == digitY) {
-                        hasCommonDigit = true;
-                        break;
-                    }
-                    y /= 10;
-                }
-                x /= 10;
-            }
+	// To store current element arr[i]
+	int tmp;
 
-            if (hasCommonDigit) {
-                dp[i] = max(dp[i], dp[j] + 1);
-                maxLength = max(maxLength, dp[i]);
-            }
-        }
-    }
+	int i, j, d;
 
-    return maxLength;
+	// To store length of subsequence
+	// having common digit d
+	int dp[10];
+
+	memset(dp, 0, sizeof(dp));
+
+	// To store digits present in current element
+	int cnt[10];
+
+	// To store local maximum for current element
+	int locMax;
+
+	// For first element maximum length is 1 for
+	// each digit
+	tmp = arr[0];
+	while (tmp > 0) {
+		dp[tmp % 10] = 1;
+		tmp /= 10;
+	}
+
+	// Find digits of each element, then find length
+	// of subsequence for each digit and then find
+	// local maximum
+	for (i = 1; i < n; i++) {
+		tmp = arr[i];
+		locMax = 1;
+		memset(cnt, 0, sizeof(cnt));
+
+		// Find digits in current element
+		while (tmp > 0) {
+			cnt[tmp % 10] = 1;
+			tmp /= 10;
+		}
+
+		// For each digit present find length of
+		// subsequence and find local maximum
+		for (d = 0; d <= 9; d++) {
+			if (cnt[d]) {
+				dp[d]++;
+				locMax = max(locMax, dp[d]);
+			}
+		}
+
+		// Update value of dp[d] for each digit
+		// present in current element to local maximum
+		// found
+		for (d = 0; d <= 9; d++) {
+			if (cnt[d]) {
+				dp[d] = locMax;
+			}
+		}
+
+		// Update maximum length with local maximum
+		len = max(len, locMax);
+	}
+
+	return len;
 }
 
-int main() {
-    int T;
-    cin >> T;
+// Driver code
+int main()
+{
+	int tc;cin>>tc;
+	while(tc--){
+		int n;cin>>n;
+	int arr[n];
+	for(int i=0;i<n;i++){
+		cin>>arr[i];
+	} 
+	int N = sizeof(arr) / sizeof(arr[0]);
 
-    while (T--) {
-        int N;
-        cin >> N;
-        vector<int> arr(N);
-        for (int i = 0; i < N; ++i) {
-            cin >> arr[i];
-        }
-        int result = findLongestSubarray(arr);
-        cout << result << endl;
-    }
+	cout << findSubsequence(arr, N)<<endl;
 
-    return 0;
+	}
+	return 0;
 }
