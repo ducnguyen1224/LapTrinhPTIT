@@ -1,55 +1,46 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef unsigned long long ull;
+#define MAX 1000000000000000001
 
-#include<bits/stdc++.h>
-//#include<iostream>
-using namespace std ;
-#define int long long
-const int maxn = 1e7 + 7;
-const int mod = 1e9 + 7;
+ull Recursive (ull result, short x, int xcount, short y, int ycount, ull n, int sochuso){
+    if (xcount + ycount > sochuso + 2 || result > MAX){
+        return MAX;
+    }
+    if (xcount == ycount && result >= n){
+        return result;
+    }
 
-int n, cs, a , m , key[100005], mx, t,gt, ans , test[100005];
-int tinh(int x){
-    int ans = 1 ;
-    while(x) ans *= (x % 10), x /= 10 ;
-    return ans;
+    return min(Recursive(result * 10 + x, x, xcount + 1, y, ycount, n, sochuso),
+                Recursive(result * 10 + y, x, xcount, y, ycount + 1, n ,sochuso));
+
 }
-void implement(){
 
-    cin >> n;
-    if(n < 1000){
-        cout << tinh(key[n]);
-        return ;
+ull findNumber (ull n, short x, short y){
+    int sochuso = floor(log10(n)) + 1; //Số chữ số của n
+    ull result = 0; // Sô cần tìm
+    int xcount = 0; // Số chữ số của X
+    int ycount = 0; // Số chữ số của Y
+
+    if (x == y){
+        while (result < n){
+            result = result * 10 + x;
+        }
+        return result;
     }
-    m = n , cs = 0, ans = 1;
-    while(m){
-        cs ++;
-        m/= 10;
-    }
-    a = n;
-    for(int i = 1 ; i <= cs-3; ++i){
-        a/=10;
-    }
-    m = a;
-    for(int i = 1; i <= cs - 3; ++i){
-        m = m*10 + 9;
-    }
-    if(m == n) m = key[a];
-    else m = key[a-1];
-    for(int i = 1 ; i <= cs-3; ++i){
-        m = m*10 + 9;
-    }
-    cout << tinh(m);
+
+    return Recursive(result, x, xcount, y, ycount, n, sochuso);
 }
-int32_t main(){
-    ios_base::sync_with_stdio(0);
-    cin.tie(0); cout.tie(0);
-    for(int i = 1 ; i <= 1e3; i++){
-        if(tinh(i) > mx) mx = tinh(i), gt = i ;
-        key[i] = gt;
-    }
-    int t; cin >> t;
-    while(t--){
-        implement();
-        cout << endl;
+
+int main (){
+    int t;
+    cin >> t;
+    while (t--){
+        ull n;
+        cin >> n;
+        short x, y;
+        cin >> x >> y;
+        cout << findNumber(n ,x ,y) << endl;
     }
     return 0;
 }
