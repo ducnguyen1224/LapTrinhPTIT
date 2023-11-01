@@ -1,46 +1,34 @@
 #include <iostream>
+#include <vector>
 using namespace std;
-// Hàm kiểm tra số có chỉ chứa các chữ số A và B với tổng số chữ số A bằng tổng số chữ số B hay không
-bool isValid(int number, int A, int B) {
-    int countA = 0;
-    int countB = 0;
 
-    while (number > 0) {
-        int digit = number % 10;
-        if (digit == A) {
-            countA++;
-        } else if (digit == B) {
-            countB++;
-        } else {
-            return false;  // Số có chữ số khác A và B
-        }
-
-        number /= 10;
+int arraySum(vector<int> vct, int size) {
+    // Base case: nếu size = 0, trả về 0
+    if (size == 0) {
+        return 0;
     }
-
-    return countA == countB;  // Số có tổng số chữ số A bằng tổng số chữ số B
-}
-
-int findNumber(int N, int A, int B) {
-    while (true) {
-        N++;
-        if (isValid(N, A, B)) {
-            return N;
-        }
-    }
+    
+    // Trường hợp đệ quy: Tính tổng các phần tử từ 0 đến size - 1 và cộng thêm phần tử cuối cùng
+    return arraySum(vct, size - 1) + vct[size - 1];
 }
 
 int main() {
-    int t;
-    cin >> t;
-
-    for (int i = 0; i < t; i++) {
-        int N, A, B;
-        cin >> N >> A >> B;
-
-        int result = findNumber(N, A, B);
-        cout << result << endl;
+    int n;
+    cin >> n; // Nhập số lượng testcase
+    
+    for (int i = 0; i < n; i++) {
+        int size;
+        cin >> size; // Nhập kích thước của mảng
+        vector<int> vct(size);
+        
+        for (int j = 0; j < size; j++) {
+            cin >> vct[j]; // Nhập các phần tử của mảng
+        }
+        
+        // Gọi hàm arraySum để tính tổng và in kết quả
+        int sum = arraySum(vct, size);
+        cout << sum << endl;
     }
-
+    
     return 0;
 }
