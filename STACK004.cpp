@@ -1,92 +1,47 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <string>
+#include <stack>
 using namespace std;
-int priority(char x)
+string makeGood(string s)
 {
-    if (x == '(' || x == ')')
-        return 1;
-    if (x == '+' || x == '-')
-        return 2;
-    if (x == '*' || x == '/')
-        return 3;
-    if (x == '^')
-        return 4;
-}
-int tt(char x)
-{
-    if (x == '+' || x == '-' || x == '*' || x == '/' || x == '^')
-        return 1;
-    return 0;
-}
-int th(char x)
-{
-    if (x >= 97 && x <= 122)
-        return 1;
-    return 0;
-}
-void solve(string s)
-{
-    stack<char> a;
-    vector<char> b;
-    for (int i = 0; i < s.length(); i++)
-    {
+    stack<char> st;
 
-        int x = s[i];
-        if (x == '(')
-            a.push(x);
-        if (x == ')')
+    for (char c : s)
+    {
+        if (!st.empty() && abs(st.top() - c) == 'a' - 'A')
         {
-            char y = a.top();
-            while (y != '(')
-            {
-                b.push_back(y);
-                a.pop();
-                y = a.top();
-            }
-            a.pop();
+            st.pop();
         }
-        if (th(x))
-            b.push_back(x);
-        if (tt(x))
+        else
         {
-            if (!a.empty())
-            {
-                char y = a.top();
-                while (priority(y) >= priority(x))
-                {
-                    b.push_back(y);
-                    a.pop();
-                    if (a.empty())
-                        break;
-                    y = a.top();
-                }
-            }
-            a.push(x);
+            st.push(c);
         }
     }
-    while (!a.empty())
+
+    string result = "";
+    while (!st.empty())
     {
-        char x = a.top();
-        b.push_back(x);
-        a.pop();
+        result = st.top() + result;
+        st.pop();
     }
-    for (int i = 0; i < b.size(); i++)
-    {
-        cout << b[i];
-    }
-    cout << endl;
+
+    return result;
 }
+
 int main()
 {
-    ios_base::sync_with_stdio(false);
-    cin.tie(0);
-    cout.tie(0);
     int t;
     cin >> t;
-    string s;
-    while (t--)
-    {
-        cin >> s;
+    cin.ignore(); // Ignore newline character
 
-        solve(s);
+    for (int i = 0; i < t; ++i)
+    {
+        string s;
+        getline(cin, s);
+
+        string cleaned = makeGood(s);
+        cout << cleaned << endl;
     }
+
+    return 0;
 }

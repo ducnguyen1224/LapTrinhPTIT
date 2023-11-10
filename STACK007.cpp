@@ -1,39 +1,35 @@
-#include <bits/stdc++.h>
-using namespace std;
-int t;
-string s;
-void check_grammar(string grammar)
-{
-    int dem = 0;
-    stack<char> mystack;
-    for (char key : grammar)
-    {
-        if (key == '(')
-            mystack.push(key);
-        else
-        {
-            if (mystack.empty())
-            {
-                mystack.push('(');
-                dem++;
-            }
-            else
-                mystack.pop();
+#include <iostream>
+#include <string>
+#include <stack>
+
+std::string removeDuplicates(const std::string& s) {
+    std::stack<char> charStack;
+
+    for (char ch : s) {
+        if (!charStack.empty() && charStack.top() == ch) {
+            charStack.pop();
+        } else {
+            charStack.push(ch);
         }
     }
-    cout << dem + mystack.size() / 2 << "\n";
+
+    std::string result = "";
+    while (!charStack.empty()) {
+        result = charStack.top() + result;
+        charStack.pop();
+    }
+
+    return result;
 }
-int main()
-{
-    ios_base::sync_with_stdio(false);
-    cin.tie(0);
-    cout.tie(0);
-    cin >> t;
-    cin.ignore();
-    while (t--)
-    {
-        cin >> s;
-        check_grammar(s);
+
+int main() {
+    int t;
+    std::cin >> t;
+    while (t--) {
+        std::string s;
+        std::cin >> s;
+        std::string result = removeDuplicates(s);
+        std::cout << result << std::endl;
     }
     return 0;
 }
