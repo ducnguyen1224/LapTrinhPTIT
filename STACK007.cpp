@@ -5,7 +5,7 @@
 std::string removeDuplicates(const std::string& s) {
     std::stack<char> charStack;
 
-    for (char ch : s) {
+    for (char ch : s) 
         if (!charStack.empty() && charStack.top() == ch) {
             charStack.pop();
         } else {

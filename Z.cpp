@@ -1,47 +1,37 @@
 #include <iostream>
-#include <vector>
+#include <stack>
 #include <string>
 
 using namespace std;
 
-vector<string> buildArray(vector<int>& target, int n) {
-    vector<string> actions;
-    int targetIndex = 0;
+// Hàm kiểm tra xem biểu thức có dư thừa ngoặc hay không
+string checkParentheses(const string& expression) {
+    stack<char> parenthesesStack;
 
-    for (int i = 1; i <= n; i++) {
-        if (targetIndex == target.size()) {
-            break;
-        }
-        actions.push_back("Push");
-        if (target[targetIndex] != i) {
-            actions.push_back("Pop");
-        } else {
-            targetIndex++;
+    for (char ch : expression) {
+        if (ch == '(') {
+            parenthesesStack.push(ch);
+        } else if (ch == ')') {
+            if (parenthesesStack.empty()) {
+                return "Yes"; // Nếu stack rỗng mà gặp ngoặc đóng, có nghĩa là dư thừa
+            }
+            parenthesesStack.pop();
         }
     }
 
-    return actions;
+    // Nếu stack không rỗng sau khi duyệt xong biểu thức, có nghĩa là ngoặc mở còn dư thừa
+    return parenthesesStack.empty() ? "No" : "Yes";
 }
 
 int main() {
-    int t;
-    cin >> t;
+    int testCases;
+    cin >> testCases;
+    cin.ignore(); // Đọc ký tự xuống dòng sau số lượng bộ test
 
-    for (int i = 0; i < t; i++) {
-        int n;
-        cin >> n;
-        vector<int> target(n);
-        for (int j = 0; j < n; j++) {
-            cin >> target[j];
-        }
-
-        vector<string> actions = buildArray(target, n);
-
-        cout << "Test Case #" << i + 1 << endl;
-        for (const string& action : actions) {
-            cout << action << " ";
-        }
-        cout << endl;
+    for (int i = 0; i < testCases; ++i) {
+        string expression;
+        getline(cin, expression);
+        cout << checkParentheses(expression) << endl;
     }
 
     return 0;

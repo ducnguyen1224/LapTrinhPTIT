@@ -1,17 +1,17 @@
 #include <iostream>
 #include <queue>
-#include <vector>
 #include <sstream>
-
-bool checkEqual(std::queue<int>& q1, std::queue<int>& q2) {
+using namespace std;
+bool checkEqual(queue<int> q1, queue<int> q2) {
     if (q1.size() != q2.size()) {
-        return false; // Số lượng phần tử trong hai hàng đợi khác nhau
+        return false;
     }
 
     while (!q1.empty() && !q2.empty()) {
         if (q1.front() != q2.front()) {
-            return false; // Phần tử ở vị trí hiện tại không giống nhau
+            return false;
         }
+
         q1.pop();
         q2.pop();
     }
@@ -19,28 +19,33 @@ bool checkEqual(std::queue<int>& q1, std::queue<int>& q2) {
     return true;
 }
 
+// Hàm chuyển đổi chuỗi thành hàng đợi
+queue<int> stringToQueue(string input) {
+    queue<int> result;
+    stringstream ss(input);
+    int number;
+    char comma;
+    while (ss >> number) {
+        result.push(number);
+        ss >> comma;
+    }
+    return result;
+}
+
 int main() {
     int t;
-    std::cin >> t;
+    cin >> t;
 
     for (int i = 0; i < t; ++i) {
-        std::queue<int> q1, q2;
-        std::string input1, input2;
-        std::cin >> input1 >> input2;
+        string s1, s2;
+        cin >> s1 >> s2;
 
-        std::istringstream ss1(input1);
-        std::istringstream ss2(input2);
+        queue<int> q1 = stringToQueue(s1);
+        queue<int> q2 = stringToQueue(s2);
 
-        int num1, num2;
-        while (ss1 >> num1) {
-            q1.push(num1);
-        }
-        while (ss2 >> num2) {
-            q2.push(num2);
-        }
+        bool result = checkEqual(q1, q2);
 
-        bool areEqual = checkEqual(q1, q2);
-        std::cout << (areEqual ? 1 : 0) << std::endl;
+        cout << result << endl;
     }
 
     return 0;

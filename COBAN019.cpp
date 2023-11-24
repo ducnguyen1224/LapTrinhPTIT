@@ -1,24 +1,21 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
-#define ll  unsigned long long
-ll count(ll n)
-{
-	if(n<2)
-	return n;
-	ll result = 0;
-	result = 1 + min(n%3 + count(n/3), n%2 + count(n/2));
-	return result;
+#define ll long long
+ll dem(ll n){
+	if(n<2) return n;
+	ll ans=0;
+	ll i=sqrt(n);
+	ans=1+min(n%3+dem(n/3),min(n%2+dem(n/2),n-i*i+dem(i)));
+	return ans;
 }
+int main(){
+     int t;
+     cin>>t;
+     while(t--){
+     ll n;
+     cin>>n;
+     cout<<dem(n)<<"\n";
+	 }
 
-int main()
-{
-    int t;
-    cin >> t;
-    while(t--)
-    {
-        ll n;
-        cin >> n;
-        cout << count(n) << endl;
-    }
-
+   return 0;
 }
