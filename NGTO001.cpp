@@ -58,6 +58,7 @@ int main()
     while(test --)
     {
         cin >> n;
+        
         sl(n);
     }
     return 0;
